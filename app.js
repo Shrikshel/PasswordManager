@@ -53,7 +53,7 @@ if (argv._[0] === 'get') {
   var update = createAccount(acc);
   console.log(update);
 }
-
+// 
 //Create Account
 function createAccount(account){
   var accounts = data.getItemSync('accounts');
@@ -79,12 +79,3 @@ function getAccount(accountName) {
   });
   return matchedAccount;
 }
-
-// createAccount({
-//   name:'Twitter',
-//   username:'Shrikshel',
-//   password:'password123'
-// });
-
-// var fb = getAccount('Twitter');
-// console.log(fb);
