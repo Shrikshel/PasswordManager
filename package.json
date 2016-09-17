@@ -1,0 +1,16 @@
+{
+  "name": "pass",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "Shrikshel",
+  "license": "ISC",
+  "dependencies": {
+    "node-persist": "0.0.6",
+    "yargs": "^5.0.0"
+  }
+}
