@@ -41,20 +41,20 @@ var argv = require('yargs')
     yargs.options({
       name:{
         demand:true,
-        alias:'nn',
+        alias:'n',
         description:'Your Account Name Here...',
         type:'string'
       },
       username:{
         demand:true,
-        alias:'nu',
+        alias:'u',
         description:'Your Username Here...',
         type:'string'
       },
       password:{
         demand:true,
         description:'Password here...',
-        alias:'np',
+        alias:'p',
         type:'string'
       }
     }).help('help');
