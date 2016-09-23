@@ -10,7 +10,7 @@ var argv = require('yargs')
       name:{
         demand:true,
         alias:'n',
-        description:'Your First Name Goes Here...',
+        description:'Your Account Name Here...',
         type:'string'
       },
       username:{
@@ -32,7 +32,29 @@ var argv = require('yargs')
       name:{
         demand:true,
         alias:'n',
-        description:'Your First Name Goes Here...',
+        description:'Account Name...',
+        type:'string'
+      }
+    }).help('help');
+  })
+  .command('update', 'Update Account.', function(yargs){
+    yargs.options({
+      name:{
+        demand:true,
+        alias:'nn',
+        description:'Your Account Name Here...',
+        type:'string'
+      },
+      username:{
+        demand:true,
+        alias:'nu',
+        description:'Your Username Here...',
+        type:'string'
+      },
+      password:{
+        demand:true,
+        description:'Password here...',
+        alias:'np',
         type:'string'
       }
     }).help('help');
@@ -40,6 +62,7 @@ var argv = require('yargs')
   .help('help')
   .argv;
 
+//Business Logic
 if (argv._[0] === 'get') {
   var acc = getAccount(argv.name);
   console.log(acc);
@@ -51,9 +74,20 @@ if (argv._[0] === 'get') {
     password:argv.password
   };
   var update = createAccount(acc);
+  console.log('Record Inserted!');
+  console.log(update);
+} else if (argv._[0] === 'update') {
+  var acc = {
+    name:argv.name,
+    username:argv.username,
+    password:argv.password
+  };
+  var update = updateAccount(argv.name,acc);
+  console.log('Updated Account!');
   console.log(update);
 }
-// 
+
+
 //Create Account
 function createAccount(account){
   var accounts = data.getItemSync('accounts');
@@ -78,4 +112,29 @@ function getAccount(accountName) {
     }
   });
   return matchedAccount;
+}
+
+//Update account
+function updateAccount(n,acc) {
+  var accounts = data.getItemSync('accounts');
+  var matchedAccount;
+  accounts.forEach(function (account){
+    if (account.name === n){
+      matchedAccount = account;
+    }
+  });
+
+  var index = accounts.indexOf(matchedAccount);
+  if (index > -1) {
+    accounts.splice(index, 1);
+  }
+
+
+  if (typeof accounts === 'undefined') {
+    accounts = [];
+  }
+
+  accounts.push(acc);
+  data.setItemSync('accounts', accounts);
+  return acc;
 }
