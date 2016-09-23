@@ -1,5 +1,3 @@
-console.log('Started...');
-
 const data = require('node-persist');
 data.initSync();
 
@@ -37,6 +35,19 @@ var argv = require('yargs')
       }
     }).help('help');
   })
+  .command('delete', 'Delete Data.', function(yargs){
+    yargs.options({
+      name:{
+        demand:true,
+        alias:'n',
+        description:'Account Name...',
+        type:'string'
+      }
+    }).help('help');
+  })
+  .command('getall', 'Get All Data.', function(yargs){
+
+  })
   .command('update', 'Update Account.', function(yargs){
     yargs.options({
       name:{
@@ -67,7 +78,6 @@ if (argv._[0] === 'get') {
   var acc = getAccount(argv.name);
   console.log(acc);
 } else if (argv._[0] === 'create'){
-  console.log('Creating new user...');
   var acc = {
     name:argv.name,
     username:argv.username,
@@ -85,6 +95,14 @@ if (argv._[0] === 'get') {
   var update = updateAccount(argv.name,acc);
   console.log('Updated Account!');
   console.log(update);
+} else if (argv._[0] === 'getall') {
+  console.log('Listing All Records...');
+  var acc = showAll();
+  console.log(acc);
+} else if (argv._[0] === 'delete') {
+  var acc = argv.name;
+  var accounts = deleteAccount(acc);
+  console.log(accounts);
 }
 
 
@@ -137,4 +155,34 @@ function updateAccount(n,acc) {
   accounts.push(acc);
   data.setItemSync('accounts', accounts);
   return acc;
+}
+
+//Show All
+function showAll(){
+  var accounts = data.getItemSync('accounts');
+  return accounts;
+}
+
+//Delete Account
+function deleteAccount(n) {
+  var accounts = data.getItemSync('accounts');
+  var matchedAccount;
+  accounts.forEach(function (account){
+    if (account.name === n){
+      matchedAccount = account;
+    }
+  });
+
+  if(typeof matchedAccount === 'undefined'){
+    console.log('Record Not Found!');
+    return 'Sorry for that!';
+  }else{
+    var index = accounts.indexOf(matchedAccount);
+    if (index > -1) {
+      accounts.splice(index, 1);
+    }
+    data.setItemSync('accounts', accounts);
+    console.log('Account Deleted Successfully!');
+    return accounts;
+  }
 }
